@@ -10,8 +10,8 @@ export const parseAuctionData = (data: RawAuction): ParsedAuction => {
 		amount: Number(ethers.utils.formatEther(amount)).toFixed(2),
 		startTime: dayjs.unix(BigNumber.from(startTime).toNumber()),
 		endTime: dayjs.unix(BigNumber.from(endTime).toNumber()),
-		bidder: bidder.id,
+		bidder: bidder?.id,
 		settled,
-		seed: noun.seed
+		seed: noun?.seed
 	};
 };
