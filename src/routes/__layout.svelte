@@ -1,11 +1,19 @@
 <script>
 	import '../app.css';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { getAuctionData } from '$lib/store';
+
+	let interval;
 
 	onMount(async () => {
 		getAuctionData();
+
+		interval = setInterval(() => {
+			getAuctionData();
+		}, 10 * 1000);
 	});
+
+	onDestroy(() => clearInterval(interval));
 </script>
 
 <div

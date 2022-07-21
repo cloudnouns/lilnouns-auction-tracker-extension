@@ -1,47 +1,43 @@
 <script>
 	import { Auction } from '$lib/store';
-	import dayjs from 'dayjs';
+	import { getAuctionStatus, getTimeLeft } from '$lib/utils';
+	import Countdown from '$lib/components/Countdown.svelte';
 
-	let now, totalAuctionTime, timeRemaining, progress, status;
+	let now, totalAuctionTime, timeRemaining, status, progress;
 
-	$: if ($Auction?.startTime && $Auction?.endTime) {
-		totalAuctionTime = $Auction?.endTime.diff($Auction?.startTime, 's');
-		updateProgressBar();
-	}
+	$: if ($Auction) updateTimer($Auction);
 
-	const updateProgressBar = () => {
-		now = dayjs();
+	const updateTimer = (auction) => {
+		const { isActive, startTime, endTime } = auction;
+		totalAuctionTime = endTime.diff(startTime, 's');
 
-		// if auction is over, set status & progress bar
-		if (now.isAfter($Auction?.endTime)) {
-			console.log('auction over');
+		if (isActive) {
+			timeRemaining = getTimeLeft(endTime);
+			console.log(timeRemaining);
+			progress = totalAuctionTime - timeRemaining;
+		} else {
+			timeRemaining = 0;
+			status = 'Awaiting Settlement';
 			progress = totalAuctionTime;
-			// also check if settled or not
-			if ($Auction.settled) {
-				status = '';
-			} else {
-				status = 'Awaiting settlement';
-			}
-			return;
 		}
-
-		timeRemaining = $Auction?.endTime.diff(now, 's');
-		progress = totalAuctionTime - timeRemaining;
-		status = 'in progress';
-		console.log(timeRemaining + 's left in auction');
 	};
 </script>
 
 <div class="px-3">
 	<label for="timer" class="flex items-center justify-between">
 		<p>#{$Auction?.id}</p>
-		<p>{status}</p>
+
+		{#if $Auction?.isActive}
+			<Countdown seconds={timeRemaining} />
+		{:else}
+			<p>{status}</p>
+		{/if}
 	</label>
 
 	<progress
 		id="timer"
 		value={progress || 0}
-		max={totalAuctionTime}
+		max={totalAuctionTime || 1}
 		class="h-3 w-full rounded-full border-2 border-black"
 	/>
 </div>

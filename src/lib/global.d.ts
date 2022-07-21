@@ -1,7 +1,9 @@
 import type { BigNumberish } from 'ethers';
 import type { Dayjs } from 'dayjs';
 
-export interface NounSeed {
+export type NounStyle = 'classic' | 'lil';
+
+export interface UnconvertedNounSeed {
 	background: string;
 	body: string;
 	accessory: string;
@@ -33,7 +35,17 @@ export interface ParsedAuction {
 	startTime: Dayjs;
 	endTime: Dayjs;
 	bidder: string;
-	bidTime: Dayjs;
+	bidTime?: Dayjs;
 	settled: boolean;
-	seed: NounSeed;
+	seed: UnconvertedNounSeed;
+	isActive?: boolean;
+}
+
+export interface RelativeTime {
+	relative: {
+		hours: number;
+		minutes: number;
+		seconds: number;
+	};
+	formatted;
 }

@@ -1,55 +1,54 @@
 <script>
 	import { onMount } from 'svelte';
 	import { Auction } from '$lib/store';
-	import { Noun } from '@cloudnouns/kit';
-	import { truncateAddress, resolveEnsName } from '$lib/utils';
-	import dayjs from 'dayjs';
-	import relativeTime from 'dayjs/plugin/relativeTime';
-	dayjs.extend(relativeTime);
+	import { truncateAddress, resolveEnsName, createNoun, getRelativeTime } from '$lib/utils';
 
-	let amount, noun, address, ens, bidTimeDiff;
+	let amount, noun, address, ens, relativeTime;
 
 	$: image = noun ? noun.images.svg : '/loading.gif';
 	$: walletLabel = ens || truncateAddress(address);
+	$: bidLabel = $Auction?.isActive ? 'Current Bid' : 'Winning Bid';
+	$: bidderLabel = $Auction?.isActive ? 'Bidder' : 'Won By';
 	$: if ($Auction) {
-		amount = $Auction?.amount || '0.00';
+		amount = $Auction?.amount;
 		address = $Auction?.bidder;
-		noun = createNoun($Auction?.seed);
+		noun = createNoun($Auction?.seed, 'lil');
 		checkForEns(address);
-		getRelativeBidTime();
-	}
 
-	const createNoun = (seed) => {
-		seed = Object.values(seed).map((t) => Number(t));
-		seed[0] = 9000;
-		return new Noun({ traits: seed, style: 'lil' });
-	};
+		if ($Auction?.isActive && $Auction?.bidTime) {
+			relativeTime = getRelativeTime($Auction?.bidTime);
+		} else if ($Auction?.isActive) {
+			relativeTime = '';
+		} else {
+			relativeTime = getRelativeTime($Auction?.endTime);
+		}
+	}
 
 	const checkForEns = async (address) => {
 		ens = await resolveEnsName(address);
-	};
-
-	const getRelativeBidTime = () => {
-		bidTimeDiff = $Auction.bidTime.fromNow();
 	};
 </script>
 
 <div class="grid grid-cols-2 px-3">
 	<div class="">
 		<div>
-			<p>Current Bid</p>
-			<p>Ξ {amount}</p>
-			<p class="opacity-0 transition" class:show={walletLabel}>{bidTimeDiff}</p>
+			<p>{bidLabel}</p>
+			<p>Ξ {amount || '0.00'}</p>
 		</div>
 
 		<div class="opacity-0 transition" class:show={walletLabel}>
-			<p>Bidder</p>
+			<p>{bidderLabel}</p>
 			<p>{walletLabel}</p>
+			<p class="opacity-0 transition" class:show={walletLabel}>{relativeTime}</p>
 		</div>
 	</div>
 
-	<div class="bg-white rounded border border-black drop-shadow-[2.5px_2.5px_0_rgba(0,0,0,0.8)]">
-		<img src={image} alt="noun" class="w-full" />
+	<div class="bg-white rounded border border-black drop-shadow-[5px_5px_0_rgba(0,0,0,0.8)]">
+		<img
+			src={image}
+			alt="noun"
+			class="w-full bg-gradient-to-b from-slate-100/90 via-lime-50 to-slate-300/80"
+		/>
 	</div>
 </div>
 
