@@ -13,7 +13,6 @@
 
 		if (isActive) {
 			timeRemaining = getTimeLeft(endTime);
-			console.log(timeRemaining);
 			progress = totalAuctionTime - timeRemaining;
 		} else {
 			timeRemaining = 0;
