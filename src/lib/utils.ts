@@ -57,16 +57,16 @@ export const createNoun = (seed: UnconvertedNounSeed, style: NounStyle = 'classi
 	return new Noun({ traits: seedArary, style });
 };
 
-export const getRelativeTime = (time: Dayjs) => {
+export const getRelativeTimeFromNow = (time: Dayjs) => {
 	return time.fromNow();
 };
 
-export const getTimeLeft = (endTime: Dayjs): number => {
+export const getTimeLeftInSeconds = (endTime: Dayjs): number => {
 	const now = dayjs();
 	return endTime.diff(now, 's');
 };
 
-export const formatRelativeTime = (seconds: number): RelativeTime => {
+export const getRelativeTimeFromAuctionEnd = (seconds: number): RelativeTime => {
 	let formatted = '';
 
 	const hoursRemaining = seconds / 60 / 60;
@@ -81,6 +81,8 @@ export const formatRelativeTime = (seconds: number): RelativeTime => {
 
 	if (relative.hours) formatted += relative.hours.toString() + 'h ';
 
+	// todo: remove m when no hours present.
+	// ex. 59s instead of 00m 59s
 	if (relative.hours && relative.minutes) {
 		formatted += relative.minutes.toString().padStart(2, '0') + 'm ';
 	} else if (relative.minutes) {
@@ -101,8 +103,8 @@ export const formatRelativeTime = (seconds: number): RelativeTime => {
 	};
 };
 
-export const getAuctionDataOnDelay = (delay: number) => {
+export const getAuctionDataOnDelay = (delayInSeconds: number) => {
 	setTimeout(() => {
 		getAuctionData();
-	}, delay * 1000);
+	}, delayInSeconds * 1000);
 };

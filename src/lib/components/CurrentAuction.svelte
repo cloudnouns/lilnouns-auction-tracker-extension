@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { Auction } from '$lib/store';
-	import { truncateAddress, resolveEnsName, createNoun, getRelativeTime } from '$lib/utils';
+	import { truncateAddress, resolveEnsName, createNoun, getRelativeTimeFromNow } from '$lib/utils';
 
 	let amount, noun, address, ens, relativeTime;
 
@@ -16,11 +16,11 @@
 		checkForEns(address);
 
 		if ($Auction?.isActive && $Auction?.bidTime) {
-			relativeTime = getRelativeTime($Auction?.bidTime);
+			relativeTime = getRelativeTimeFromNow($Auction?.bidTime);
 		} else if ($Auction?.isActive) {
 			relativeTime = '';
 		} else {
-			relativeTime = getRelativeTime($Auction?.endTime);
+			relativeTime = getRelativeTimeFromNow($Auction?.endTime);
 		}
 	}
 

@@ -35,8 +35,8 @@ export const provider = writable(ethers.providers.getDefaultProvider());
 
 export const getAuctionData = async () => {
 	const request = await fetch(
-		'https://api.thegraph.com/subgraphs/name/lilnounsdao/lil-nouns-subgraph',
-		// 'https://api.thegraph.com/subgraphs/name/nounsdao/nouns-subgraph',
+		// 'https://api.thegraph.com/subgraphs/name/lilnounsdao/lil-nouns-subgraph',
+		'https://api.thegraph.com/subgraphs/name/nounsdao/nouns-subgraph',
 		{
 			method: 'post',
 			body: JSON.stringify({ query })

@@ -1,36 +1,49 @@
 <script>
+	import { onDestroy } from 'svelte';
 	import { Auction } from '$lib/store';
-	import { getAuctionStatus, getTimeLeft } from '$lib/utils';
-	import Countdown from '$lib/components/Countdown.svelte';
+	import { getTimeLeftInSeconds, getRelativeTimeFromAuctionEnd } from '$lib/utils';
 
-	let now, totalAuctionTime, timeRemaining, status, progress;
+	let now, totalAuctionTime, timeLeftInSeconds, status, progress, interval;
 
 	$: if ($Auction) updateTimer($Auction);
+	$: if (timeLeftInSeconds && timeLeftInSeconds > 0) {
+		progress = totalAuctionTime - timeLeftInSeconds;
+		status = getRelativeTimeFromAuctionEnd(timeLeftInSeconds).formatted;
+	}
+
+	const startTimerInterval = () => {
+		return setInterval(() => {
+			if (timeLeftInSeconds <= 0) {
+				status = 'Awaiting Settlement';
+				clearInterval(interval);
+				return;
+			}
+			timeLeftInSeconds = timeLeftInSeconds - 1;
+		}, 1000);
+	};
 
 	const updateTimer = (auction) => {
 		const { isActive, startTime, endTime } = auction;
 		totalAuctionTime = endTime.diff(startTime, 's');
 
 		if (isActive) {
-			timeRemaining = getTimeLeft(endTime);
-			progress = totalAuctionTime - timeRemaining;
+			timeLeftInSeconds = getTimeLeftInSeconds(endTime);
+			if (!interval) interval = startTimerInterval();
 		} else {
-			timeRemaining = 0;
+			timeLeftInSeconds = 0;
 			status = 'Awaiting Settlement';
 			progress = totalAuctionTime;
+			clearInterval(interval);
 		}
 	};
+
+	onDestroy(() => clearInterval(interval));
 </script>
 
 <div class="px-3">
 	<label for="timer" class="flex items-center justify-between">
 		<p>#{$Auction?.id}</p>
-
-		{#if $Auction?.isActive}
-			<Countdown seconds={timeRemaining} />
-		{:else}
-			<p>{status}</p>
-		{/if}
+		<p>{status}</p>
 	</label>
 
 	<progress
