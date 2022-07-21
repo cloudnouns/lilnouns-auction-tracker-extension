@@ -1,6 +1,7 @@
-import { writable, type Writable } from 'svelte/store';
 import type { ParsedAuction, RawAuction } from './global';
+import { writable, type Writable } from 'svelte/store';
 import { parseAuctionData } from './utils';
+import { ethers } from 'ethers';
 
 const query = `
 {
@@ -21,14 +22,21 @@ const query = `
     bidder {
       id
     }
+    bids(orderBy: amount, orderDirection: desc) {
+      amount
+      blockTimestamp
+    }
     settled
   }
 }
 `;
 
+export const provider = writable(ethers.providers.getDefaultProvider());
+
 export const getAuctionData = async () => {
 	const request = await fetch(
-		'https://api.thegraph.com/subgraphs/name/lilnounsdao/lil-nouns-subgraph',
+		// 'https://api.thegraph.com/subgraphs/name/lilnounsdao/lil-nouns-subgraph',
+		'https://api.thegraph.com/subgraphs/name/nounsdao/nouns-subgraph',
 		{
 			method: 'post',
 			body: JSON.stringify({ query })

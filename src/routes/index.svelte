@@ -8,7 +8,7 @@
 <Navbar />
 
 <div class="flex flex-col">
-	<Timer />
 	<CurrentAuction />
+	<Timer />
 	<AuctionTable />
 </div>

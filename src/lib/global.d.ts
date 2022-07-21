@@ -9,6 +9,11 @@ export interface NounSeed {
 	glasses: string;
 }
 
+interface Bid {
+	amount: string;
+	blockTimestamp: BigNumberish;
+}
+
 export interface RawAuction {
 	amount: string;
 	bidder: { id: string };
@@ -19,6 +24,7 @@ export interface RawAuction {
 	};
 	settled: boolean;
 	startTime: BigNumberish;
+	bids: Bid[];
 }
 
 export interface ParsedAuction {
@@ -27,6 +33,7 @@ export interface ParsedAuction {
 	startTime: Dayjs;
 	endTime: Dayjs;
 	bidder: string;
+	bidTime: Dayjs;
 	settled: boolean;
 	seed: NounSeed;
 }

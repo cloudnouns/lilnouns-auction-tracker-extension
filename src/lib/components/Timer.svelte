@@ -2,10 +2,10 @@
 	import { Auction } from '$lib/store';
 	import dayjs from 'dayjs';
 
-	let now, totalAuctionTime, timeRemaining, progress;
+	let now, totalAuctionTime, timeRemaining, progress, status;
 
 	$: if ($Auction?.startTime && $Auction?.endTime) {
-		totalAuctionTime = $Auction?.endTime.diff($Auction.startTime, 's');
+		totalAuctionTime = $Auction?.endTime.diff($Auction?.startTime, 's');
 		updateProgressBar();
 	}
 
@@ -13,31 +13,35 @@
 		now = dayjs();
 
 		// if auction is over, set status & progress bar
-		if (now.isAfter($Auction.endTime)) {
+		if (now.isAfter($Auction?.endTime)) {
 			console.log('auction over');
 			progress = totalAuctionTime;
 			// also check if settled or not
+			if ($Auction.settled) {
+				status = '';
+			} else {
+				status = 'Awaiting settlement';
+			}
 			return;
 		}
 
-		timeRemaining = $Auction.endTime.diff(now, 's');
+		timeRemaining = $Auction?.endTime.diff(now, 's');
 		progress = totalAuctionTime - timeRemaining;
+		status = 'in progress';
 		console.log(timeRemaining + 's left in auction');
 	};
 </script>
 
-{#if $Auction}
-	<div class="px-3">
-		<label for="timer" class="flex items-center justify-between">
-			<p>#{$Auction.id}</p>
-			<p>Awaiting Settlement</p>
-		</label>
+<div class="px-3">
+	<label for="timer" class="flex items-center justify-between">
+		<p>#{$Auction?.id}</p>
+		<p>{status}</p>
+	</label>
 
-		<progress
-			id="timer"
-			value={progress}
-			max={totalAuctionTime}
-			class="h-3 w-full rounded-full border-2 border-black"
-		/>
-	</div>
-{/if}
+	<progress
+		id="timer"
+		value={progress || 0}
+		max={totalAuctionTime}
+		class="h-3 w-full rounded-full border-2 border-black"
+	/>
+</div>
