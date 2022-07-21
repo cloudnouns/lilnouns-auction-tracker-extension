@@ -5,7 +5,7 @@
 	let now, totalAuctionTime, timeRemaining, progress;
 
 	$: if ($Auction?.startTime && $Auction?.endTime) {
-		totalAuctionTime = $Auction?.endTime.diff($Auction.startTime, 's') || 0;
+		totalAuctionTime = $Auction?.endTime.diff($Auction.startTime, 's');
 		updateProgressBar();
 	}
 
@@ -22,7 +22,7 @@
 
 		timeRemaining = $Auction.endTime.diff(now, 's');
 		progress = totalAuctionTime - timeRemaining;
-		console.log(timeRemaining + 'seconds left in auction');
+		console.log(timeRemaining + 's left in auction');
 	};
 </script>
 
