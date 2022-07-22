@@ -15,7 +15,7 @@
 		return setInterval(() => {
 			if (timeLeftInSeconds <= 0) {
 				status = 'Awaiting Settlement';
-				clearInterval(interval);
+				interval = clearInterval(interval);
 				return;
 			}
 			timeLeftInSeconds = timeLeftInSeconds - 1;
@@ -33,11 +33,11 @@
 			timeLeftInSeconds = 0;
 			status = 'Awaiting Settlement';
 			progress = totalAuctionTime;
-			clearInterval(interval);
+			interval = clearInterval(interval);
 		}
 	};
 
-	onDestroy(() => clearInterval(interval));
+	onDestroy(() => (interval = clearInterval(interval)));
 </script>
 
 <div class="px-3">

@@ -1,0 +1,6 @@
+{
+	"graphs": {
+		"nouns": "https://api.thegraph.com/subgraphs/name/nounsdao/nouns-subgraph",
+		"lilnouns": "https://api.thegraph.com/subgraphs/name/lilnounsdao/lil-nouns-subgraph"
+	}
+}

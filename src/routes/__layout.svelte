@@ -13,7 +13,7 @@
 		}, 10 * 1000);
 	});
 
-	onDestroy(() => clearInterval(interval));
+	onDestroy(() => (interval = clearInterval(interval)));
 </script>
 
 <div

@@ -1,7 +1,12 @@
-import type { ParsedAuction, RawAuction } from './global';
-import { writable, type Writable } from 'svelte/store';
+import type { ParsedAuction, Preferences, RawAuction } from './global';
+import { get, writable, type Writable } from 'svelte/store';
 import { parseAuctionData } from './utils';
 import { ethers } from 'ethers';
+import Config from '$lib/config.json';
+
+export const Prefs: Writable<Preferences> = writable({
+	dao: 'lilnouns'
+});
 
 const query = `
 {
@@ -34,14 +39,11 @@ const query = `
 export const provider = writable(ethers.providers.getDefaultProvider());
 
 export const getAuctionData = async () => {
-	const request = await fetch(
-		// 'https://api.thegraph.com/subgraphs/name/lilnounsdao/lil-nouns-subgraph',
-		'https://api.thegraph.com/subgraphs/name/nounsdao/nouns-subgraph',
-		{
-			method: 'post',
-			body: JSON.stringify({ query })
-		}
-	);
+	const dao = get(Prefs).dao;
+	const request = await fetch(Config.graphs[dao], {
+		method: 'post',
+		body: JSON.stringify({ query })
+	});
 
 	const response = await request.json();
 	const parsedAuctions = response.data.auctions.map((a: RawAuction) => parseAuctionData(a));

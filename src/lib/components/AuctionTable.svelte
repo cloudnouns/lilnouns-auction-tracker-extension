@@ -5,7 +5,7 @@
 
 {#if $PastAuctions}
 	<div class="px-3">
-		{#each $PastAuctions as auction, i}
+		{#each $PastAuctions as auction (auction.id)}
 			<TableItem {auction} />
 		{/each}
 	</div>

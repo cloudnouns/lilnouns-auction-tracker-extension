@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { Auction } from '$lib/store';
+	import { Auction, Prefs } from '$lib/store';
 	import { truncateAddress, resolveEnsName, createNoun, getRelativeTimeFromNow } from '$lib/utils';
 
 	let amount, noun, address, ens, relativeTime;
@@ -9,10 +9,11 @@
 	$: walletLabel = ens || truncateAddress(address);
 	$: bidLabel = $Auction?.isActive ? 'Current Bid' : 'Winning Bid';
 	$: bidderLabel = $Auction?.isActive ? 'Bidder' : 'Won By';
+	$: dao = $Prefs.dao === 'nouns' ? 'classic' : 'lil';
 	$: if ($Auction) {
 		amount = $Auction?.amount;
 		address = $Auction?.bidder;
-		noun = createNoun($Auction?.seed, 'lil');
+		noun = createNoun($Auction?.seed, dao);
 		checkForEns(address);
 
 		if ($Auction?.isActive && $Auction?.bidTime) {
