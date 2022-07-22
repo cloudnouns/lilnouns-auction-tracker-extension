@@ -30,15 +30,18 @@
 	};
 </script>
 
-<div class="grid grid-cols-2 px-3">
-	<div class="">
+<div class="grid grid-cols-2 px-4 py-6">
+	<div class="flex flex-col justify-around">
 		<div>
-			<p>{bidLabel}</p>
-			<p>Ξ {amount || '0.00'}</p>
+			<p class="label">{bidLabel}</p>
+			<div class="flex items-center gap-1.5">
+				<p class="text-xl font-bold leading-none mt-0.5">Ξ</p>
+				<p class="value">{amount || '0.00'}</p>
+			</div>
 		</div>
 
 		<div class="opacity-0 transition" class:show={walletLabel}>
-			<p>{bidderLabel}</p>
+			<p class="label">{bidderLabel}</p>
 			<p>{walletLabel}</p>
 			<p class="opacity-0 transition" class:show={walletLabel}>{relativeTime}</p>
 		</div>
@@ -56,5 +59,9 @@
 <style>
 	.show {
 		@apply opacity-100;
+	}
+
+	.value {
+		@apply text-4xl font-bold leading-none text-black/80;
 	}
 </style>

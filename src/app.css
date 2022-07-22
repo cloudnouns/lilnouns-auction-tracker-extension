@@ -2,5 +2,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
+
+.label {
+	@apply uppercase font-bold text-xs tracking-wide leading-none;
+}
+
 @tailwind components;
 @tailwind utilities;
