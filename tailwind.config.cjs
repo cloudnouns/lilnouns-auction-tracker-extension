@@ -6,7 +6,8 @@ const config = {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['Syne', ...defaultTheme.fontFamily.sans]
+				sans: ['Syne', ...defaultTheme.fontFamily.sans],
+				reg: [...defaultTheme.fontFamily.sans]
 			},
 			colors: {
 				'cloudnoun-green': '#dcff70',

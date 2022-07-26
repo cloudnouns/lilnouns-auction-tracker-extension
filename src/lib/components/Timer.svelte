@@ -40,16 +40,18 @@
 	onDestroy(() => (interval = clearInterval(interval)));
 </script>
 
-<div class="px-3">
+<div class="px-3 mb-5">
 	<label for="timer" class="flex items-center justify-between">
-		<p>#{$Auction?.id}</p>
-		<p>{status}</p>
+		<p class="text-base text-black/80 label"><span class="text-xs">#</span>{$Auction?.id}</p>
+		<p class="text-base value">{status}</p>
 	</label>
 
-	<progress
-		id="timer"
-		value={progress || 0}
-		max={totalAuctionTime || 1}
-		class="h-3 w-full rounded-full border-2 border-black"
-	/>
+	<div class="-mt-1">
+		<progress
+			id="timer"
+			value={progress || 0}
+			max={totalAuctionTime || 1}
+			class="w-full h-3 border-2 border-black rounded-full"
+		/>
+	</div>
 </div>

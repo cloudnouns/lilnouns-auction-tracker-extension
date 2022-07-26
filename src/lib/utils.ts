@@ -52,7 +52,8 @@ export const getAuctionStatus = (endTime: Dayjs): boolean => {
 	return endTime.diff(now, 's') > 0 ? true : false;
 };
 
-export const createNoun = (seed: UnconvertedNounSeed, style: NounStyle = 'classic') => {
+export const createNoun = (seed: UnconvertedNounSeed, dao: Pref_DAO = 'nouns'): Noun => {
+	const style: NounStyle = dao === 'lilnouns' ? 'lil' : 'classic';
 	const seedArary: number[] = Object.values(seed).map((t) => Number(t));
 	seedArary[0] = 9000;
 	return new Noun({ traits: seedArary, style });

@@ -4,7 +4,7 @@
 </script>
 
 {#if $PastAuctions}
-	<div class="px-3">
+	<div class="grid grid-cols-2 gap-2.5 px-3">
 		{#each $PastAuctions as auction (auction.id)}
 			<TableItem {auction} />
 		{/each}

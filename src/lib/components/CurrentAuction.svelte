@@ -15,11 +15,10 @@
 	$: walletLabel = ens || truncateAddress(address);
 	$: bidLabel = $Auction?.isActive ? 'Current Bid' : 'Winning Bid';
 	$: bidderLabel = $Auction?.isActive ? 'Bidder' : 'Won By';
-	$: dao = $Prefs.dao === 'nouns' ? 'classic' : 'lil';
 	$: if ($Auction) {
 		amount = $Auction?.amount;
 		address = $Auction?.bidder;
-		noun = createNoun($Auction?.seed, dao);
+		noun = createNoun($Auction?.seed, $Prefs.dao);
 		checkForEns(address);
 		url = getNounUrl($Prefs?.dao, $Auction?.id);
 
@@ -37,7 +36,23 @@
 	};
 </script>
 
-<div class="grid grid-cols-2 px-4 py-6">
+<div class="grid grid-cols-2 px-4 py-6 gap-3.5">
+	<div
+		class="bg-white rounded border border-black drop-shadow-[5px_5px_0_rgba(0,0,0,0.8)] relative group"
+	>
+		<a
+			href={url}
+			alt="open noun page"
+			target="_blank"
+			class="absolute flex flex-col items-center justify-center w-full h-full text-white transition opacity-0 bg-slate-900/60 backdrop-blur-sm group-hover:opacity-100"
+		>
+			<p>⌐◧-◧</p>
+			<p class="text-xl font-bold">more info</p>
+		</a>
+
+		<img src={image} alt="noun" class="nounBg" />
+	</div>
+
 	<div class="flex flex-col justify-around">
 		<div>
 			<p class="label">{bidLabel}</p>
@@ -47,32 +62,23 @@
 			</div>
 		</div>
 
-		<div class="opacity-0 transition" class:show={walletLabel}>
+		<div class="w-full transition opacity-0" class:show={walletLabel}>
 			<p class="label">{bidderLabel}</p>
-			<a href={'https://etherscan.io/address/' + address} alt="view on etherscan" target="_blank"
-				>{walletLabel}</a
+			<a
+				href={'https://etherscan.io/address/' + address}
+				alt="view on etherscan"
+				target="_blank"
+				class="text-base font-semibold break-all hover:text-cloudnoun-peach">{walletLabel}</a
 			>
-			<p class="opacity-0 transition" class:show={walletLabel}>{relativeTime}</p>
+			<p class="transition opacity-0 text-black/50 text-[11px] label" class:show={walletLabel}>
+				{relativeTime}
+			</p>
 		</div>
-	</div>
-
-	<div class="bg-white rounded border border-black drop-shadow-[5px_5px_0_rgba(0,0,0,0.8)]">
-		<a href={url} alt="open noun page" target="_blank" class="">
-			<img
-				src={image}
-				alt="noun"
-				class="w-full bg-gradient-to-b from-slate-100/90 via-lime-50 to-slate-300/80"
-			/>
-		</a>
 	</div>
 </div>
 
 <style>
 	.show {
 		@apply opacity-100;
-	}
-
-	.value {
-		@apply text-4xl font-bold leading-none text-black/80;
 	}
 </style>

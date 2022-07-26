@@ -10,7 +10,7 @@ export const Prefs: Writable<Preferences> = writable({
 
 const query = `
 {
-  auctions(orderBy: startTime, orderDirection: desc, first: 6) {
+  auctions(orderBy: startTime, orderDirection: desc, first: 11) {
     id
     noun {
       seed {
