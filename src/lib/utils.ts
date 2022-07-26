@@ -4,7 +4,8 @@ import type {
 	ParsedAuction,
 	UnconvertedNounSeed,
 	NounStyle,
-	RelativeTime
+	RelativeTime,
+	Pref_DAO
 } from './global';
 import { ethers, BigNumber } from 'ethers';
 import { Noun } from '@cloudnouns/kit';
@@ -107,4 +108,9 @@ export const getAuctionDataOnDelay = (delayInSeconds: number) => {
 	setTimeout(() => {
 		getAuctionData();
 	}, delayInSeconds * 1000);
+};
+
+export const getNounUrl = (dao: Pref_DAO, id: number): string => {
+	const domain = dao === 'lilnouns' ? 'lilnouns.wtf/lilnoun/' : 'nouns.wtf/noun/';
+	return 'https://' + domain + id;
 };

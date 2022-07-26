@@ -1,9 +1,15 @@
 <script>
 	import { onMount } from 'svelte';
 	import { Auction, Prefs } from '$lib/store';
-	import { truncateAddress, resolveEnsName, createNoun, getRelativeTimeFromNow } from '$lib/utils';
+	import {
+		truncateAddress,
+		resolveEnsName,
+		createNoun,
+		getRelativeTimeFromNow,
+		getNounUrl
+	} from '$lib/utils';
 
-	let amount, noun, address, ens, relativeTime;
+	let amount, noun, address, ens, relativeTime, url;
 
 	$: image = noun ? noun.images.svg : '/loading.gif';
 	$: walletLabel = ens || truncateAddress(address);
@@ -15,6 +21,7 @@
 		address = $Auction?.bidder;
 		noun = createNoun($Auction?.seed, dao);
 		checkForEns(address);
+		url = getNounUrl($Prefs?.dao, $Auction?.id);
 
 		if ($Auction?.isActive && $Auction?.bidTime) {
 			relativeTime = getRelativeTimeFromNow($Auction?.bidTime);
@@ -42,17 +49,21 @@
 
 		<div class="opacity-0 transition" class:show={walletLabel}>
 			<p class="label">{bidderLabel}</p>
-			<p>{walletLabel}</p>
+			<a href={'https://etherscan.io/address/' + address} alt="view on etherscan" target="_blank"
+				>{walletLabel}</a
+			>
 			<p class="opacity-0 transition" class:show={walletLabel}>{relativeTime}</p>
 		</div>
 	</div>
 
 	<div class="bg-white rounded border border-black drop-shadow-[5px_5px_0_rgba(0,0,0,0.8)]">
-		<img
-			src={image}
-			alt="noun"
-			class="w-full bg-gradient-to-b from-slate-100/90 via-lime-50 to-slate-300/80"
-		/>
+		<a href={url} alt="open noun page" target="_blank" class="">
+			<img
+				src={image}
+				alt="noun"
+				class="w-full bg-gradient-to-b from-slate-100/90 via-lime-50 to-slate-300/80"
+			/>
+		</a>
 	</div>
 </div>
 
