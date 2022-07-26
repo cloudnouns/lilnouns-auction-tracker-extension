@@ -49,3 +49,9 @@ export interface RelativeTime {
 	};
 	formatted;
 }
+
+export interface Preferences {
+	dao: Pref_DAO;
+}
+
+export type Pref_DAO = 'nouns' | 'lilnouns';

@@ -1,9 +1,15 @@
 <script>
 	import { onMount } from 'svelte';
-	import { Auction } from '$lib/store';
-	import { truncateAddress, resolveEnsName, createNoun, getRelativeTimeFromNow } from '$lib/utils';
+	import { Auction, Prefs } from '$lib/store';
+	import {
+		truncateAddress,
+		resolveEnsName,
+		createNoun,
+		getRelativeTimeFromNow,
+		getNounUrl
+	} from '$lib/utils';
 
-	let amount, noun, address, ens, relativeTime;
+	let amount, noun, address, ens, relativeTime, url;
 
 	$: image = noun ? noun.images.svg : '/loading.gif';
 	$: walletLabel = ens || truncateAddress(address);
@@ -12,8 +18,9 @@
 	$: if ($Auction) {
 		amount = $Auction?.amount;
 		address = $Auction?.bidder;
-		noun = createNoun($Auction?.seed, 'lil');
+		noun = createNoun($Auction?.seed, $Prefs.dao);
 		checkForEns(address);
+		url = getNounUrl($Prefs?.dao, $Auction?.id);
 
 		if ($Auction?.isActive && $Auction?.bidTime) {
 			relativeTime = getRelativeTimeFromNow($Auction?.bidTime);
@@ -29,26 +36,44 @@
 	};
 </script>
 
-<div class="grid grid-cols-2 px-3">
-	<div class="">
-		<div>
-			<p>{bidLabel}</p>
-			<p>Ξ {amount || '0.00'}</p>
-		</div>
+<div class="grid grid-cols-2 px-4 py-6 gap-3.5">
+	<div
+		class="bg-white rounded border border-black drop-shadow-[5px_5px_0_rgba(0,0,0,0.8)] relative group"
+	>
+		<a
+			href={url}
+			alt="open noun page"
+			target="_blank"
+			class="absolute flex flex-col items-center justify-center w-full h-full text-white transition opacity-0 bg-slate-900/60 backdrop-blur-sm group-hover:opacity-100"
+		>
+			<p>⌐◧-◧</p>
+			<p class="text-xl font-bold">more info</p>
+		</a>
 
-		<div class="opacity-0 transition" class:show={walletLabel}>
-			<p>{bidderLabel}</p>
-			<p>{walletLabel}</p>
-			<p class="opacity-0 transition" class:show={walletLabel}>{relativeTime}</p>
-		</div>
+		<img src={image} alt="noun" class="nounBg" />
 	</div>
 
-	<div class="bg-white rounded border border-black drop-shadow-[5px_5px_0_rgba(0,0,0,0.8)]">
-		<img
-			src={image}
-			alt="noun"
-			class="w-full bg-gradient-to-b from-slate-100/90 via-lime-50 to-slate-300/80"
-		/>
+	<div class="flex flex-col justify-around">
+		<div>
+			<p class="label">{bidLabel}</p>
+			<div class="flex items-center gap-1.5">
+				<p class="text-xl font-bold leading-none mt-0.5">Ξ</p>
+				<p class="value">{amount || '0.00'}</p>
+			</div>
+		</div>
+
+		<div class="w-full transition opacity-0" class:show={walletLabel}>
+			<p class="label">{bidderLabel}</p>
+			<a
+				href={'https://etherscan.io/address/' + address}
+				alt="view on etherscan"
+				target="_blank"
+				class="text-base font-semibold break-all hover:text-cloudnoun-peach">{walletLabel}</a
+			>
+			<p class="transition opacity-0 text-black/50 text-[11px] label" class:show={walletLabel}>
+				{relativeTime}
+			</p>
+		</div>
 	</div>
 </div>
 

@@ -4,7 +4,8 @@ import type {
 	ParsedAuction,
 	UnconvertedNounSeed,
 	NounStyle,
-	RelativeTime
+	RelativeTime,
+	Pref_DAO
 } from './global';
 import { ethers, BigNumber } from 'ethers';
 import { Noun } from '@cloudnouns/kit';
@@ -51,7 +52,8 @@ export const getAuctionStatus = (endTime: Dayjs): boolean => {
 	return endTime.diff(now, 's') > 0 ? true : false;
 };
 
-export const createNoun = (seed: UnconvertedNounSeed, style: NounStyle = 'classic') => {
+export const createNoun = (seed: UnconvertedNounSeed, dao: Pref_DAO = 'nouns'): Noun => {
+	const style: NounStyle = dao === 'lilnouns' ? 'lil' : 'classic';
 	const seedArary: number[] = Object.values(seed).map((t) => Number(t));
 	seedArary[0] = 9000;
 	return new Noun({ traits: seedArary, style });
@@ -107,4 +109,9 @@ export const getAuctionDataOnDelay = (delayInSeconds: number) => {
 	setTimeout(() => {
 		getAuctionData();
 	}, delayInSeconds * 1000);
+};
+
+export const getNounUrl = (dao: Pref_DAO, id: number): string => {
+	const domain = dao === 'lilnouns' ? 'lilnouns.wtf/lilnoun/' : 'nouns.wtf/noun/';
+	return 'https://' + domain + id;
 };

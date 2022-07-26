@@ -2,5 +2,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
+
+.uniform-txt {
+	font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.label {
+	@apply text-xs font-bold leading-none tracking-wide uppercase;
+}
+
+.value {
+	@apply text-4xl font-bold leading-none text-black/80;
+}
+
+.nounBg {
+	@apply w-full bg-gradient-to-b from-slate-100/90 via-lime-50 to-slate-300/80;
+}
+
 @tailwind components;
+
+progress[value] {
+	@apply w-full;
+}
+
+progress[value]::-webkit-progress-bar {
+	@apply overflow-hidden bg-white rounded-full;
+}
+
+progress[value]::-webkit-progress-value {
+	@apply bg-black;
+}
+
 @tailwind utilities;
