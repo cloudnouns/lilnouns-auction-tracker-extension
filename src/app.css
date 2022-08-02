@@ -1,7 +1,12 @@
 /* Write your global styles here, in PostCSS syntax */
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap'); */
 
 @tailwind base;
+
+body {
+	height: 600px;
+	width: 375px;
+}
 
 .uniform-txt {
 	font-feature-settings: 'pnum' on, 'lnum' on;
