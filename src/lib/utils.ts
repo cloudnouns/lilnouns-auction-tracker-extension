@@ -16,7 +16,11 @@ dayjs.extend(relativeTime);
 
 export const resolveEnsName = async (address: string): Promise<string | null> => {
 	if (!address) return null;
-	return await get(provider).lookupAddress(address);
+	// return await get(provider).lookupAddress(address);
+	const response = await fetch('https://api.ensideas.com/ens/resolve/' + address);
+	const data = await response.json();
+	if (data?.name) return data.name;
+	return null;
 };
 
 export const parseAuctionData = (data: RawAuction): ParsedAuction => {
