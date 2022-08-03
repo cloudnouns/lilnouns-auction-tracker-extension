@@ -1,4 +1,4 @@
-import adapter from 'sveltekit-adapter-browser-extension';
+import adapter from './adapter.mjs';
 import preprocess from 'svelte-preprocess';
 
 /** @type {import('@sveltejs/kit').Config} */
