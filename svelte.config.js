@@ -13,8 +13,11 @@ const config = {
 
 	kit: {
 		adapter: adapter(),
-		appDir: 'ext',
-		prerender: { default: true }
+		appDir: 'app',
+		prerender: { default: true },
+		serviceWorker: {
+			register: false
+		}
 	}
 };
 
