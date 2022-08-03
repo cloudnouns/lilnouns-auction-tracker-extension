@@ -1,4 +1,3 @@
-import { get } from 'svelte/store';
 import type {
 	RawAuction,
 	ParsedAuction,
@@ -9,7 +8,7 @@ import type {
 } from './global';
 import { ethers, BigNumber } from 'ethers';
 import { Noun } from '@cloudnouns/kit';
-import { provider, getAuctionData } from '$lib/store';
+import { getAuctionData } from '$lib/store';
 import dayjs, { type Dayjs } from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 dayjs.extend(relativeTime);

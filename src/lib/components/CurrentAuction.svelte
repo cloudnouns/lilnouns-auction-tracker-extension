@@ -57,8 +57,12 @@
 		<div>
 			<p class="label">{bidLabel}</p>
 			<div class="flex items-center gap-1.5">
-				<p class="text-xl font-bold leading-none mt-0.5">Ξ</p>
-				<p class="value">{amount || '0.00'}</p>
+				{#if $Auction}
+					<p class="text-xl font-bold leading-none mt-0.5">Ξ</p>
+					<p class="value">{amount || '0.00'}</p>
+				{:else}
+					<div class="h-8 w-28 placeholder mt-1" />
+				{/if}
 			</div>
 		</div>
 
