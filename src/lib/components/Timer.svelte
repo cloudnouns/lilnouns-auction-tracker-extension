@@ -41,12 +41,12 @@
 </script>
 
 <div class="px-3 mb-5">
-	<label for="timer" class="flex items-center justify-between">
+	<label for="timer" class="flex items-center justify-between px-1">
 		<p class="text-base text-black/80 label"><span class="text-xs">#</span>{$Auction?.id}</p>
 		<p class="text-base value">{status}</p>
 	</label>
 
-	<div class="-mt-1">
+	<div class="-mt-1.5">
 		<progress
 			id="timer"
 			value={progress || 0}
