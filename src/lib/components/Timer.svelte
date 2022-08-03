@@ -42,8 +42,13 @@
 
 <div class="px-3 mb-5">
 	<label for="timer" class="flex items-center justify-between px-1">
-		<p class="text-base text-black/80 label"><span class="text-xs">#</span>{$Auction?.id}</p>
-		<p class="text-base value">{status}</p>
+		{#if $Auction}
+			<p class="text-base text-black/80 label"><span class="text-xs">#</span>{$Auction?.id}</p>
+			<p class="text-base value">{status}</p>
+		{:else}
+			<div class="h-5 w-24 placeholder mb-1" />
+			<div class="h-5 w-16 placeholder mb-1" />
+		{/if}
 	</label>
 
 	<div class="-mt-1">

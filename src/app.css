@@ -24,6 +24,10 @@ body {
 	@apply w-full bg-gradient-to-b from-slate-100/90 via-lime-50 to-slate-300/80;
 }
 
+.placeholder {
+	@apply bg-black/20 animate-pulse rounded-lg;
+}
+
 @tailwind components;
 
 progress[value] {
