@@ -46,7 +46,7 @@
 		<p class="text-base value">{status}</p>
 	</label>
 
-	<div class="-mt-1.5">
+	<div class="-mt-1">
 		<progress
 			id="timer"
 			value={progress || 0}
